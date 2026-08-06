@@ -30,7 +30,7 @@ export default function Layout() {
       {/* Sidebar -- desktop only */}
       <aside className="hidden md:flex md:flex-col md:w-64 md:shrink-0 border-r border-sage-light bg-white">
         <div className="px-6 py-6 border-b border-sage-light">
-          <h1 className="font-display text-xl font-semibold text-pine">Group Tracker</h1>
+          <h1 className="font-display text-xl font-semibold text-pine">ENC Discipleship Database</h1>
           {user && (
             <div className="mt-1">
               <p className="text-sm text-charcoal-soft">
