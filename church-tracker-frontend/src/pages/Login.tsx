@@ -33,7 +33,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-paper px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="font-display text-3xl font-semibold text-pine">Group Tracker</h1>
+          <h1 className="font-display text-3xl font-semibold text-pine">ENC Discipleship Database</h1>
           <p className="text-charcoal-soft mt-2">Sign in to manage your group.</p>
         </div>
 
