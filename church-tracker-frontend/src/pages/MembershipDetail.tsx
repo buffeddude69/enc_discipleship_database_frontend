@@ -8,7 +8,6 @@ export default function MembershipDetail() {
   const { id: groupId, membershipId } = useParams();
   const navigate = useNavigate();
   const [membership, setMembership] = useState<GroupMembership | null>(null);
-  const [roleInGroup, setRoleInGroup] = useState<GroupMembership["role_in_group"]>("member");
   const [attendanceStatus, setAttendanceStatus] = useState<GroupMembership["attendance_status"]>("new");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -20,7 +19,6 @@ export default function MembershipDetail() {
       .get<GroupMembership>(`/group-memberships/${membershipId}/`)
       .then((m) => {
         setMembership(m);
-        setRoleInGroup(m.role_in_group);
         setAttendanceStatus(m.attendance_status);
       })
       .catch(() => setError("Couldn't load this member's info."));
@@ -33,7 +31,6 @@ export default function MembershipDetail() {
     setSubmitting(true);
     try {
       await api.patch<GroupMembership>(`/group-memberships/${membershipId}/`, {
-        role_in_group: roleInGroup,
         attendance_status: attendanceStatus,
       });
       navigate(`/groups/${groupId}`);
@@ -59,16 +56,23 @@ export default function MembershipDetail() {
   if (error && !membership) return <p className="text-brick bg-brick-light rounded-lg px-4 py-3 max-w-lg mx-auto">{error}</p>;
   if (!membership) return <p className="text-charcoal-soft">Loading…</p>;
 
+  const role = membership.member_detail.role;
+
   return (
     <div className="max-w-lg mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-display text-2xl font-semibold text-pine">
-          {membership.member_detail.first_name} {membership.member_detail.last_name}
-        </h2>
+        <div>
+          <h2 className="font-display text-2xl font-semibold text-pine">
+            {membership.member_detail.first_name} {membership.member_detail.last_name}
+          </h2>
+          <p className="text-sm text-charcoal-soft mt-0.5">
+            Role: {role[0].toUpperCase() + role.slice(1)}
+          </p>
+        </div>
         <button
           onClick={handleRemove}
           disabled={removing}
-          className="text-sm font-medium text-brick hover:text-brick/80 disabled:opacity-60"
+          className="text-sm font-medium text-brick hover:text-brick/80 disabled:opacity-60 shrink-0"
         >
           {removing ? "Removing…" : "Remove from group"}
         </button>
@@ -82,19 +86,6 @@ export default function MembershipDetail() {
       </Link>
 
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-sage-light p-6 space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-charcoal mb-1.5">Role in this group</label>
-          <select
-            value={roleInGroup}
-            onChange={(e) => setRoleInGroup(e.target.value as GroupMembership["role_in_group"])}
-            className={inputClass}
-          >
-            <option value="member">Member</option>
-            <option value="intern">Intern</option>
-            <option value="leader">Leader</option>
-          </select>
-        </div>
-
         <div>
           <label className="block text-sm font-medium text-charcoal mb-1.5">Attendance status this month</label>
           <select

@@ -65,11 +65,14 @@ export interface DiscipleshipStage {
   order: number;
 }
 
+export type MemberRole = "member" | "intern";
+
 export interface Member {
   id: number;
   first_name: string;
   last_name: string;
   gender: Gender;
+  role: MemberRole;
   year_level: YearLevel;
   school: number;
   school_name: string;
@@ -87,7 +90,6 @@ export interface Member {
   updated_at: string;
 }
 
-export type RoleInGroup = "member" | "intern" | "leader";
 export type AttendanceStatus = "new" | "active" | "inactive";
 
 export interface GroupMembership {
@@ -96,7 +98,6 @@ export interface GroupMembership {
   group_name: string;
   member: number;
   member_detail: Member;
-  role_in_group: RoleInGroup;
   attendance_status: AttendanceStatus;
   date_joined_group: string;
   status_updated_at: string;
@@ -106,8 +107,10 @@ export interface GroupMembership {
 export interface DashboardData {
   total_members: number;
   total_memberships: number;
-  by_role: { member: number; intern: number; leader: number };
+  total_leaders: number;
+  by_role: { member: number; intern: number };
   by_attendance_status: { new: number; active: number; inactive: number };
   by_school: Record<string, number>;
   by_area: Record<string, number>;
+  leaders_by_area: Record<string, number>;
 }

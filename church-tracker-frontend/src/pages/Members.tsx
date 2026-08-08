@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
+import { ROLE_LABELS } from "../api/labels";
 import type { Member, School } from "../api/types";
 
 const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -10,6 +11,7 @@ export default function Members() {
   const [schools, setSchools] = useState<School[]>([]);
   const [search, setSearch] = useState("");
   const [schoolFilter, setSchoolFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState<Member["role"] | "">("");
   const [meetingDayFilter, setMeetingDayFilter] = useState("");
   const [needsUpdateOnly, setNeedsUpdateOnly] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +24,7 @@ export default function Members() {
     const params = new URLSearchParams();
     if (search.trim()) params.set("search", search.trim());
     if (schoolFilter) params.set("school", schoolFilter);
+    if (roleFilter) params.set("role", roleFilter);
     if (meetingDayFilter) params.set("meeting_day", meetingDayFilter);
     if (needsUpdateOnly) params.set("needs_update", "true");
     const query = params.toString() ? `?${params.toString()}` : "";
@@ -34,7 +37,7 @@ export default function Members() {
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [search, schoolFilter, meetingDayFilter, needsUpdateOnly]);
+  }, [search, schoolFilter, roleFilter, meetingDayFilter, needsUpdateOnly]);
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -68,6 +71,16 @@ export default function Members() {
               {s.name}
             </option>
           ))}
+        </select>
+
+        <select
+          value={roleFilter}
+          onChange={(e) => setRoleFilter(e.target.value as Member["role"] | "")}
+          className="px-3 py-2 rounded-lg border border-sage-light bg-white text-sm"
+        >
+          <option value="">All roles</option>
+          <option value="member">Member</option>
+          <option value="intern">Intern</option>
         </select>
 
         <select
@@ -117,7 +130,7 @@ export default function Members() {
                     {member.first_name} {member.last_name}
                   </p>
                   <p className="text-xs text-charcoal-soft mt-0.5">
-                    {member.school_name}
+                    {ROLE_LABELS[member.role]} · {member.school_name}
                     {member.group_names.length > 0 && ` · ${member.group_names.join(", ")}`}
                   </p>
                 </div>

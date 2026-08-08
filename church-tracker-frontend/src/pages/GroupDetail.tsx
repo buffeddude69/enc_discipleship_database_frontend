@@ -84,7 +84,7 @@ export default function GroupDetail() {
                     </p>
                   </div>
                   <p className="text-xs text-charcoal-soft mt-0.5 ml-4">
-                    {ROLE_LABELS[m.role_in_group]}
+                    {ROLE_LABELS[m.member_detail.role]}
                     {m.member_detail.ministry_names.length > 0 && ` · ${m.member_detail.ministry_names.join(", ")}`}
                   </p>
                 </div>

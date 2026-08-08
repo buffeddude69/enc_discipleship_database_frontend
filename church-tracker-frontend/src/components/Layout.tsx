@@ -75,7 +75,7 @@ export default function Layout() {
       {/* Mobile top bar */}
       <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-sage-light bg-white sticky top-0 z-10">
         <div className="flex items-center gap-2">
-          <h1 className="font-display text-lg font-semibold text-pine">Group Tracker</h1>
+          <h1 className="font-display text-lg font-semibold text-pine">ENC Discipleship Database</h1>
           {user?.is_staff && (
             <span className="inline-flex items-center gap-1 text-xs font-medium text-pine bg-sage-light rounded-full px-2 py-0.5">
               ★ Staff

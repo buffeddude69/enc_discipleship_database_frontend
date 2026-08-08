@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api/client";
-import { YEAR_LEVEL_LABELS } from "../api/labels";
+import { ROLE_LABELS, YEAR_LEVEL_LABELS } from "../api/labels";
 import type { Member } from "../api/types";
 
 export default function MemberProfile() {
@@ -46,6 +46,7 @@ export default function MemberProfile() {
           />
         )}
 
+        <Field label="Role" value={ROLE_LABELS[member.role]} />
         <Field label="Gender" value={member.gender === "male" ? "Male" : "Female"} />
         <Field label="Year Level / Life Stage" value={YEAR_LEVEL_LABELS[member.year_level] ?? member.year_level} />
         <Field label="School / Campus" value={member.school_name} />

@@ -13,12 +13,11 @@ export default function AddMembership() {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState<Member[]>([]);
-  const [roleInGroup, setRoleInGroup] = useState<GroupMembership["role_in_group"]>("member");
   const [attendanceStatus, setAttendanceStatus] = useState<GroupMembership["attendance_status"]>("new");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // If we're returning from "create new profile", load it and skip straight to the role/status step.
+  // If we're returning from "create new profile", load it and skip straight to the status step.
   useEffect(() => {
     if (preselectedMemberId) {
       api.get<Member>(`/members/${preselectedMemberId}/`).then(setSelectedMember).catch(() => {});
@@ -45,7 +44,6 @@ export default function AddMembership() {
       await api.post<GroupMembership>("/group-memberships/", {
         group: Number(groupId),
         member: selectedMember.id,
-        role_in_group: roleInGroup,
         attendance_status: attendanceStatus,
       });
       navigate(`/groups/${groupId}`);
@@ -79,7 +77,10 @@ export default function AddMembership() {
                   <span className="font-medium text-charcoal">
                     {m.first_name} {m.last_name}
                   </span>
-                  <span className="text-charcoal-soft"> · {m.school_name}</span>
+                  <span className="text-charcoal-soft">
+                    {" "}
+                    · {m.role[0].toUpperCase() + m.role.slice(1)} · {m.school_name}
+                  </span>
                 </button>
               </li>
             ))}
@@ -100,29 +101,25 @@ export default function AddMembership() {
       {selectedMember && (
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-sage-light p-6 space-y-4">
           <div className="flex items-center justify-between bg-sage-light rounded-lg px-3.5 py-2.5">
-            <p className="text-sm font-medium text-charcoal">
-              {selectedMember.first_name} {selectedMember.last_name}
-            </p>
+            <div>
+              <p className="text-sm font-medium text-charcoal">
+                {selectedMember.first_name} {selectedMember.last_name}
+              </p>
+              <p className="text-xs text-charcoal-soft">
+                Role: {selectedMember.role[0].toUpperCase() + selectedMember.role.slice(1)}
+                {" · "}
+                <Link to={`/members/${selectedMember.id}/edit`} className="text-pine font-medium">
+                  Change on their profile
+                </Link>
+              </p>
+            </div>
             <button
               type="button"
               onClick={() => setSelectedMember(null)}
-              className="text-xs font-medium text-pine"
+              className="text-xs font-medium text-pine shrink-0"
             >
               Change
             </button>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1.5">Role in this group</label>
-            <select
-              value={roleInGroup}
-              onChange={(e) => setRoleInGroup(e.target.value as GroupMembership["role_in_group"])}
-              className={inputClass}
-            >
-              <option value="member">Member</option>
-              <option value="intern">Intern</option>
-              <option value="leader">Leader</option>
-            </select>
           </div>
 
           <div>

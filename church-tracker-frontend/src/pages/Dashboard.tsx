@@ -17,15 +17,15 @@ export default function Dashboard() {
     <div className="max-w-2xl mx-auto space-y-8">
       <h2 className="font-display text-2xl font-semibold text-pine">Dashboard</h2>
 
-      <div className="grid grid-cols-2 gap-3">
-        <StatCard label="Total Member Profiles" value={data.total_members} />
-        <StatCard label="Total Group Memberships" value={data.total_memberships} />
+      <div className="grid grid-cols-3 gap-3">
+        <StatCard label="Member Profiles" value={data.total_members} />
+        <StatCard label="Leader Accounts" value={data.total_leaders} />
+        <StatCard label="Group Memberships" value={data.total_memberships} />
       </div>
 
       <Section title="By Role">
         <StatRow label="Members" value={data.by_role.member} />
         <StatRow label="Interns" value={data.by_role.intern} />
-        <StatRow label="Leaders" value={data.by_role.leader} />
       </Section>
 
       <Section title="This Month's Attendance">
@@ -43,11 +43,20 @@ export default function Dashboard() {
         ))}
       </Section>
 
-      <Section title="By Area">
+      <Section title="Students by Area">
         {Object.entries(data.by_area).length === 0 && (
           <p className="text-sm text-charcoal-soft">No data yet.</p>
         )}
         {Object.entries(data.by_area).map(([name, count]) => (
+          <StatRow key={name} label={name} value={count} />
+        ))}
+      </Section>
+
+      <Section title="Leaders by Area">
+        {Object.entries(data.leaders_by_area).length === 0 && (
+          <p className="text-sm text-charcoal-soft">No data yet.</p>
+        )}
+        {Object.entries(data.leaders_by_area).map(([name, count]) => (
           <StatRow key={name} label={name} value={count} />
         ))}
       </Section>

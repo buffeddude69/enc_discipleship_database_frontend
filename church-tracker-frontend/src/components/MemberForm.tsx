@@ -14,6 +14,7 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
   const [firstName, setFirstName] = useState(initial?.first_name ?? "");
   const [lastName, setLastName] = useState(initial?.last_name ?? "");
   const [gender, setGender] = useState<Member["gender"]>(initial?.gender ?? "male");
+  const [role, setRole] = useState<Member["role"]>(initial?.role ?? "member");
   const [yearLevel, setYearLevel] = useState<Member["year_level"] | "">(initial?.year_level ?? "");
   const [schoolId, setSchoolId] = useState(initial?.school ? String(initial.school) : "");
   const [ministryIds, setMinistryIds] = useState<number[]>(initial?.ministries ?? []);
@@ -45,6 +46,7 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
         first_name: firstName,
         last_name: lastName,
         gender,
+        role,
         year_level: yearLevel,
         school: schoolId,
         is_in_ministry: ministryIds.length > 0,
@@ -89,6 +91,16 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
+      </Field>
+
+      <Field label="Role">
+        <select required value={role} onChange={(e) => setRole(e.target.value as Member["role"])} className={inputClass}>
+          <option value="member">Member</option>
+          <option value="intern">Intern</option>
+        </select>
+        <p className="text-xs text-charcoal-soft mt-1">
+          People who are already Leaders have their own Leader account instead of a profile here.
+        </p>
       </Field>
 
       <Field label="Year level / life stage">
