@@ -38,14 +38,6 @@ export default function MemberProfile() {
       )}
 
       <div className="bg-white rounded-2xl border border-sage-light p-6 space-y-4">
-        {member.profile_picture && (
-          <img
-            src={member.profile_picture}
-            alt={`${member.first_name} ${member.last_name}`}
-            className="w-28 h-28 rounded-full object-cover mx-auto"
-          />
-        )}
-
         <Field label="Role" value={ROLE_LABELS[member.role]} />
         <Field label="Gender" value={member.gender === "male" ? "Male" : "Female"} />
         <Field label="Year Level / Life Stage" value={YEAR_LEVEL_LABELS[member.year_level] ?? member.year_level} />

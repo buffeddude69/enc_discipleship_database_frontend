@@ -22,7 +22,6 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
     initial?.discipleship_stage ? String(initial.discipleship_stage) : ""
   );
   const [remarks, setRemarks] = useState(initial?.remarks ?? "");
-  const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [remarksPhoto, setRemarksPhoto] = useState<File | null>(null);
 
   const [schools, setSchools] = useState<School[]>([]);
@@ -54,7 +53,6 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
         discipleship_stage: discipleshipStageId || null,
         remarks,
       };
-      if (profilePicture) payload.profile_picture = profilePicture;
       if (remarksPhoto) payload.remarks_photo = remarksPhoto;
       await onSubmit(payload);
     } catch (err) {
@@ -73,18 +71,6 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
           <input required value={lastName} onChange={(e) => setLastName(e.target.value)} className={inputClass} />
         </Field>
       </div>
-
-      <Field label="Profile picture">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setProfilePicture(e.target.files?.[0] ?? null)}
-          className={inputClass}
-        />
-        {initial?.profile_picture && !profilePicture && (
-          <p className="text-xs text-charcoal-soft mt-1">A photo is already set. Choose a new file to replace it.</p>
-        )}
-      </Field>
 
       <Field label="Gender">
         <select required value={gender} onChange={(e) => setGender(e.target.value as Member["gender"])} className={inputClass}>

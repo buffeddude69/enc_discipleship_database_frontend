@@ -83,7 +83,6 @@ export interface Member {
   discipleship_stage_name: string | null;
   remarks: string;
   remarks_photo: string | null;
-  profile_picture: string | null;
   needs_update: boolean;
   group_names: string[];
   created_at: string;
