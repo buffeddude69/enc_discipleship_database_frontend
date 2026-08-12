@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { inputClass } from "../components/Form";
+import { LEADER_ROLE_LABELS, ROLE_LABELS } from "../api/labels";
 import type { GroupMembership } from "../api/types";
 
 export default function MembershipDetail() {
@@ -21,7 +22,7 @@ export default function MembershipDetail() {
         setMembership(m);
         setAttendanceStatus(m.attendance_status);
       })
-      .catch(() => setError("Couldn't load this member's info."));
+      .catch(() => setError("Couldn't load this person's info."));
   }, [membershipId]);
 
   async function handleSubmit(e: FormEvent) {
@@ -42,13 +43,13 @@ export default function MembershipDetail() {
 
   async function handleRemove() {
     if (!membershipId || !membership) return;
-    if (!confirm(`Remove ${membership.member_detail.first_name} from this group? Their profile stays intact.`)) return;
+    if (!confirm(`Remove ${membership.person_name} from this group? Their profile/account stays intact.`)) return;
     setRemoving(true);
     try {
       await api.delete(`/group-memberships/${membershipId}/`);
       navigate(`/groups/${groupId}`);
     } catch {
-      setError("Couldn't remove this member. Please try again.");
+      setError("Couldn't remove this person. Please try again.");
       setRemoving(false);
     }
   }
@@ -56,17 +57,18 @@ export default function MembershipDetail() {
   if (error && !membership) return <p className="text-brick bg-brick-light rounded-lg px-4 py-3 max-w-lg mx-auto">{error}</p>;
   if (!membership) return <p className="text-charcoal-soft">Loading…</p>;
 
-  const role = membership.member_detail.role;
+  const isLeader = membership.person_type === "leader";
+  const roleLabel = isLeader
+    ? membership.leader_detail && LEADER_ROLE_LABELS[membership.leader_detail.leader_role]
+    : membership.member_detail && ROLE_LABELS[membership.member_detail.role];
 
   return (
     <div className="max-w-lg mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-display text-2xl font-semibold text-pine">
-            {membership.member_detail.first_name} {membership.member_detail.last_name}
-          </h2>
+          <h2 className="font-display text-2xl font-semibold text-pine">{membership.person_name}</h2>
           <p className="text-sm text-charcoal-soft mt-0.5">
-            Role: {role[0].toUpperCase() + role.slice(1)}
+            {isLeader ? "Leader" : "Role"}: {roleLabel}
           </p>
         </div>
         <button
@@ -79,7 +81,7 @@ export default function MembershipDetail() {
       </div>
 
       <Link
-        to={`/members/${membership.member}`}
+        to={isLeader ? `/leaders/${membership.leader}` : `/members/${membership.member}`}
         className="inline-block text-sm font-medium text-pine border border-pine rounded-lg px-3.5 py-1.5 hover:bg-sage-light transition-colors mb-4"
       >
         View Full Profile →

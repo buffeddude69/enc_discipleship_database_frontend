@@ -16,6 +16,7 @@ import AddMemberProfile from "./pages/AddMemberProfile";
 import EditMemberProfile from "./pages/EditMemberProfile";
 import MemberProfile from "./pages/MemberProfile";
 import Leaders from "./pages/Leaders";
+import LeaderProfile from "./pages/LeaderProfile";
 import ManageLookups from "./pages/ManageLookups";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -50,6 +51,11 @@ export default function App() {
               {/* Own profile */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/edit" element={<EditProfile />} />
+
+              {/* Any authenticated leader can view another leader's profile
+                  (e.g. from a group membership row) -- the full searchable
+                  directory below stays staff-only. */}
+              <Route path="/leaders/:id" element={<LeaderProfile />} />
 
               {/* Staff-only */}
               <Route element={<StaffRoute />}>

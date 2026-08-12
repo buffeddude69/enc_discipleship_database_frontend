@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api/client";
-import { ATTENDANCE_DOT_COLOR, ROLE_LABELS } from "../api/labels";
+import { ATTENDANCE_DOT_COLOR, LEADER_ROLE_LABELS, ROLE_LABELS } from "../api/labels";
 import type { Group, GroupMembership } from "../api/types";
 
 export default function GroupDetail() {
@@ -79,13 +79,22 @@ export default function GroupDetail() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className={`inline-block w-2 h-2 rounded-full ${ATTENDANCE_DOT_COLOR[m.attendance_status]}`} />
-                    <p className="font-medium text-charcoal">
-                      {m.member_detail.first_name} {m.member_detail.last_name}
-                    </p>
+                    <p className="font-medium text-charcoal">{m.person_name}</p>
+                    {m.person_type === "leader" && (
+                      <span className="text-xs font-medium text-pine bg-sage-light rounded-full px-2 py-0.5">
+                        ★ Leader
+                      </span>
+                    )}
                   </div>
                   <p className="text-xs text-charcoal-soft mt-0.5 ml-4">
-                    {ROLE_LABELS[m.member_detail.role]}
-                    {m.member_detail.ministry_names.length > 0 && ` · ${m.member_detail.ministry_names.join(", ")}`}
+                    {m.person_type === "member" && m.member_detail ? (
+                      <>
+                        {ROLE_LABELS[m.member_detail.role]}
+                        {m.member_detail.ministry_names.length > 0 && ` · ${m.member_detail.ministry_names.join(", ")}`}
+                      </>
+                    ) : (
+                      m.leader_detail && LEADER_ROLE_LABELS[m.leader_detail.leader_role]
+                    )}
                   </p>
                 </div>
                 {m.needs_update && (

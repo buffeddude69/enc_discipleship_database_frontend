@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../api/client";
+import { LEADER_ROLE_LABELS } from "../api/labels";
 import type { User } from "../api/types";
-
-const LEADER_ROLE_LABELS: Record<string, string> = {
-  small_group_leader: "Small Group Leader",
-  leadership_group_leader: "Leadership Group Leader",
-  campus_missionary: "Campus Missionary",
-};
 
 export default function Leaders() {
   const [leaders, setLeaders] = useState<User[] | null>(null);
@@ -63,22 +59,27 @@ export default function Leaders() {
 
       <ul className="space-y-2">
         {leaders?.map((leader) => (
-          <li key={leader.id} className="bg-white rounded-xl border border-sage-light p-3.5">
-            <div className="flex items-center gap-2">
-              <p className="font-medium text-charcoal">
-                {leader.first_name} {leader.last_name}
+          <li key={leader.id}>
+            <Link
+              to={`/leaders/${leader.id}`}
+              className="block bg-white rounded-xl border border-sage-light p-3.5 hover:border-pine transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <p className="font-medium text-charcoal">
+                  {leader.first_name} {leader.last_name}
+                </p>
+                {leader.is_staff && (
+                  <span className="text-xs font-medium text-pine bg-sage-light rounded-full px-2 py-0.5">
+                    ★ Staff
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-charcoal-soft mt-0.5">
+                {LEADER_ROLE_LABELS[leader.leader_role] ?? leader.leader_role}
+                {" · "}@{leader.username}
+                {leader.contact_number && ` · ${leader.contact_number}`}
               </p>
-              {leader.is_staff && (
-                <span className="text-xs font-medium text-pine bg-sage-light rounded-full px-2 py-0.5">
-                  ★ Staff
-                </span>
-              )}
-            </div>
-            <p className="text-xs text-charcoal-soft mt-0.5">
-              {LEADER_ROLE_LABELS[leader.leader_role] ?? leader.leader_role}
-              {" · "}@{leader.username}
-              {leader.contact_number && ` · ${leader.contact_number}`}
-            </p>
+            </Link>
           </li>
         ))}
       </ul>

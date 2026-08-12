@@ -1,4 +1,4 @@
-import type { AttendanceStatus, MemberRole, YearLevel } from "../api/types";
+import type { AttendanceStatus, LeaderRole, MemberRole, YearLevel } from "../api/types";
 
 export const YEAR_LEVEL_OPTIONS: { value: YearLevel; label: string }[] = [
   { value: "elementary", label: "Elementary" },
@@ -24,6 +24,12 @@ export const YEAR_LEVEL_LABELS: Record<YearLevel, string> = Object.fromEntries(
 export const ROLE_LABELS: Record<MemberRole, string> = {
   member: "Member",
   intern: "Intern",
+};
+
+export const LEADER_ROLE_LABELS: Record<LeaderRole, string> = {
+  small_group_leader: "Small Group Leader",
+  leadership_group_leader: "Leadership Group Leader",
+  campus_missionary: "Campus Missionary",
 };
 
 export const ATTENDANCE_LABELS: Record<AttendanceStatus, string> = {

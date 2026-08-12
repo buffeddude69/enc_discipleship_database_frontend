@@ -17,6 +17,8 @@ export interface User {
   area: Area;
   contact_number: string;
   is_staff: boolean;
+  groups_led: string[];
+  groups_member_of: string[];
 }
 
 export type GroupType = "small_group" | "leadership_group" | "campus_ministry";
@@ -90,13 +92,18 @@ export interface Member {
 }
 
 export type AttendanceStatus = "new" | "active" | "inactive";
+export type PersonType = "member" | "leader";
 
 export interface GroupMembership {
   id: number;
   group: number;
   group_name: string;
-  member: number;
-  member_detail: Member;
+  member: number | null;
+  member_detail: Member | null;
+  leader: number | null;
+  leader_detail: User | null;
+  person_name: string;
+  person_type: PersonType;
   attendance_status: AttendanceStatus;
   date_joined_group: string;
   status_updated_at: string;
