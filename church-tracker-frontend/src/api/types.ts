@@ -1,9 +1,12 @@
 // These mirror the DRF serializers exactly -- keep in sync with the backend.
 
 export type LeaderRole = "small_group_leader" | "leadership_group_leader" | "campus_missionary";
-export type Demography = "student_youth" | "single_young_professional" | "married" | "parent" | "senior";
+export type Demography = "high_school" | "college" | "single_young_professional" | "married" | "parent" | "senior";
 export type Gender = "male" | "female";
 export type Area = "binan" | "nuvali" | "santa_rosa_city";
+export type LeaderYearLevel =
+  | "grade_7" | "grade_8" | "grade_9" | "grade_10" | "grade_11" | "grade_12"
+  | "college_1" | "college_2" | "college_3" | "college_4" | "college_5_plus";
 
 export interface User {
   id: number;
@@ -17,6 +20,10 @@ export interface User {
   area: Area;
   contact_number: string;
   is_staff: boolean;
+  is_student: boolean;
+  year_level: LeaderYearLevel | "";
+  school: number | null;
+  school_name: string | null;
   groups_led: string[];
   groups_member_of: string[];
 }

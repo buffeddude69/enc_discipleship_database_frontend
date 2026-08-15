@@ -2,6 +2,8 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Field, inputClass } from "../components/Form";
+import StudentFields from "../components/StudentFields";
+import { extractErrorMessage } from "../api/client";
 import type { User } from "../api/types";
 
 export default function Register() {
@@ -14,13 +16,16 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [leaderRole, setLeaderRole] = useState<User["leader_role"]>("small_group_leader");
-  const [demography, setDemography] = useState<User["demography"]>("single_young_professional");
+  const [demography, setDemography] = useState<User["demography"]>("college");
   const [gender, setGender] = useState<User["gender"]>("male");
   const [area, setArea] = useState<User["area"]>("binan");
   const [contactNumber, setContactNumber] = useState("");
+  const [yearLevel, setYearLevel] = useState<User["year_level"]>("");
+  const [schoolId, setSchoolId] = useState("");
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const isStudent = demography === "high_school" || demography === "college";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -38,10 +43,12 @@ export default function Register() {
         gender,
         area,
         contact_number: contactNumber,
+        year_level: isStudent ? yearLevel : "",
+        school: isStudent && schoolId ? Number(schoolId) : null,
       });
       navigate("/groups");
-    } catch {
-      setError("Couldn't create your account. That username may already be taken, or a field needs fixing.");
+    } catch (err) {
+      setError(extractErrorMessage(err, "Couldn't create your account. That username may already be taken, or a field needs fixing."));
     } finally {
       setSubmitting(false);
     }
@@ -98,13 +105,22 @@ export default function Register() {
 
           <Field label="Demography">
             <select value={demography} onChange={(e) => setDemography(e.target.value as User["demography"])} className={inputClass}>
-              <option value="student_youth">Student / Youth</option>
+              <option value="high_school">High School</option>
+              <option value="college">College</option>
               <option value="single_young_professional">Single / Young Professional</option>
               <option value="married">Married</option>
               <option value="parent">Parent</option>
               <option value="senior">Senior</option>
             </select>
           </Field>
+
+          <StudentFields
+            demography={demography}
+            yearLevel={yearLevel}
+            onYearLevelChange={setYearLevel}
+            schoolId={schoolId}
+            onSchoolIdChange={setSchoolId}
+          />
 
           <Field label="Gender">
             <select value={gender} onChange={(e) => setGender(e.target.value as User["gender"])} className={inputClass}>

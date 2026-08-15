@@ -89,7 +89,7 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
         </p>
       </Field>
 
-      <Field label="Year level / Life stage">
+      <Field label="Year level / life stage">
         <select
           required
           value={yearLevel}
@@ -107,7 +107,7 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
         </select>
       </Field>
 
-      <Field label="School / Campus">
+      <Field label="School / campus">
         <select required value={schoolId} onChange={(e) => setSchoolId(e.target.value)} className={inputClass}>
           <option value="" disabled>
             — Select —

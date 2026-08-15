@@ -1,4 +1,4 @@
-import type { AttendanceStatus, LeaderRole, MemberRole, YearLevel } from "../api/types";
+import type { AttendanceStatus, Demography, LeaderRole, LeaderYearLevel, MemberRole, YearLevel } from "../api/types";
 
 export const YEAR_LEVEL_OPTIONS: { value: YearLevel; label: string }[] = [
   { value: "elementary", label: "Elementary" },
@@ -30,6 +30,39 @@ export const LEADER_ROLE_LABELS: Record<LeaderRole, string> = {
   small_group_leader: "Small Group Leader",
   leadership_group_leader: "Leadership Group Leader",
   campus_missionary: "Campus Missionary",
+};
+
+export const LEADER_YEAR_LEVEL_OPTIONS: { value: LeaderYearLevel; label: string }[] = [
+  { value: "grade_7", label: "Grade 7" },
+  { value: "grade_8", label: "Grade 8" },
+  { value: "grade_9", label: "Grade 9" },
+  { value: "grade_10", label: "Grade 10" },
+  { value: "grade_11", label: "Grade 11" },
+  { value: "grade_12", label: "Grade 12" },
+  { value: "college_1", label: "1st Year College" },
+  { value: "college_2", label: "2nd Year College" },
+  { value: "college_3", label: "3rd Year College" },
+  { value: "college_4", label: "4th Year College" },
+  { value: "college_5_plus", label: "5th+ Year College" },
+];
+
+export const LEADER_YEAR_LEVEL_LABELS: Record<LeaderYearLevel, string> = Object.fromEntries(
+  LEADER_YEAR_LEVEL_OPTIONS.map((o) => [o.value, o.label])
+) as Record<LeaderYearLevel, string>;
+
+export const DEMOGRAPHY_LABELS: Record<Demography, string> = {
+  high_school: "High School",
+  college: "College",
+  single_young_professional: "Single / Young Professional",
+  married: "Married",
+  parent: "Parent",
+  senior: "Senior",
+};
+
+export const AREA_LABELS: Record<string, string> = {
+  binan: "Binan",
+  nuvali: "Nuvali",
+  santa_rosa_city: "Santa Rosa City",
 };
 
 export const ATTENDANCE_LABELS: Record<AttendanceStatus, string> = {

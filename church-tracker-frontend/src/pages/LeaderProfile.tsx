@@ -1,22 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../api/client";
-import { LEADER_ROLE_LABELS } from "../api/labels";
+import { AREA_LABELS, DEMOGRAPHY_LABELS, LEADER_ROLE_LABELS, LEADER_YEAR_LEVEL_LABELS } from "../api/labels";
 import type { User } from "../api/types";
-
-const DEMOGRAPHY_LABELS: Record<string, string> = {
-  student_youth: "Student / Youth",
-  single_young_professional: "Single / Young Professional",
-  married: "Married",
-  parent: "Parent",
-  senior: "Senior",
-};
-
-const AREA_LABELS: Record<string, string> = {
-  binan: "Binan",
-  nuvali: "Nuvali",
-  santa_rosa_city: "Santa Rosa City",
-};
 
 export default function LeaderProfile() {
   const { id } = useParams();
@@ -53,6 +39,16 @@ export default function LeaderProfile() {
         <Field label="Gender" value={leader.gender === "male" ? "Male" : "Female"} />
         <Field label="Area" value={AREA_LABELS[leader.area] ?? leader.area} />
         <Field label="Contact Number" value={leader.contact_number || "—"} />
+        <Field label="Currently a Student?" value={leader.is_student ? "Yes" : "No"} />
+        {leader.is_student && (
+          <>
+            <Field
+              label="Grade Level / Year"
+              value={leader.year_level ? LEADER_YEAR_LEVEL_LABELS[leader.year_level] : "—"}
+            />
+            <Field label="School / Campus" value={leader.school_name ?? "—"} />
+          </>
+        )}
         <Field
           label="Groups Led"
           value={leader.groups_led.length > 0 ? leader.groups_led.join(", ") : "None"}

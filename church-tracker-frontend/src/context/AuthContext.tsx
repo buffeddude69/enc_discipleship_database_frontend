@@ -18,6 +18,8 @@ interface RegisterPayload {
   gender: User["gender"];
   area: User["area"];
   contact_number: string;
+  year_level: User["year_level"];
+  school: number | null;
 }
 
 interface AuthContextValue {

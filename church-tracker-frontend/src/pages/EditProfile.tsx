@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api/client";
+import { api, extractErrorMessage } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { Field, inputClass } from "../components/Form";
+import StudentFields from "../components/StudentFields";
 import type { User } from "../api/types";
 
 export default function EditProfile() {
@@ -13,13 +14,16 @@ export default function EditProfile() {
   const [lastName, setLastName] = useState(user?.last_name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [leaderRole, setLeaderRole] = useState<User["leader_role"]>(user?.leader_role ?? "small_group_leader");
-  const [demography, setDemography] = useState<User["demography"]>(user?.demography ?? "single_young_professional");
+  const [demography, setDemography] = useState<User["demography"]>(user?.demography ?? "college");
   const [gender, setGender] = useState<User["gender"]>(user?.gender ?? "male");
   const [area, setArea] = useState<User["area"]>(user?.area ?? "binan");
   const [contactNumber, setContactNumber] = useState(user?.contact_number ?? "");
+  const [yearLevel, setYearLevel] = useState<User["year_level"]>(user?.year_level ?? "");
+  const [schoolId, setSchoolId] = useState(user?.school ? String(user.school) : "");
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const isStudent = demography === "high_school" || demography === "college";
 
   if (!user) return null;
 
@@ -37,11 +41,13 @@ export default function EditProfile() {
         gender,
         area,
         contact_number: contactNumber,
+        year_level: isStudent ? yearLevel : "",
+        school: isStudent && schoolId ? Number(schoolId) : null,
       });
       updateUser(updated);
       navigate("/profile");
-    } catch {
-      setError("Couldn't save your profile. Please check the fields and try again.");
+    } catch (err) {
+      setError(extractErrorMessage(err, "Couldn't save your profile. Please check the fields and try again."));
     } finally {
       setSubmitting(false);
     }
@@ -79,13 +85,22 @@ export default function EditProfile() {
 
         <Field label="Demography">
           <select value={demography} onChange={(e) => setDemography(e.target.value as User["demography"])} className={inputClass}>
-            <option value="student_youth">Student / Youth</option>
+            <option value="high_school">High School</option>
+            <option value="college">College</option>
             <option value="single_young_professional">Single / Young Professional</option>
             <option value="married">Married</option>
             <option value="parent">Parent</option>
             <option value="senior">Senior</option>
           </select>
         </Field>
+
+        <StudentFields
+          demography={demography}
+          yearLevel={yearLevel}
+          onYearLevelChange={setYearLevel}
+          schoolId={schoolId}
+          onSchoolIdChange={setSchoolId}
+        />
 
         <Field label="Gender">
           <select value={gender} onChange={(e) => setGender(e.target.value as User["gender"])} className={inputClass}>

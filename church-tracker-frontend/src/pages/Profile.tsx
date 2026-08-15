@@ -1,25 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-const LEADER_ROLE_LABELS: Record<string, string> = {
-  small_group_leader: "Small Group Leader",
-  leadership_group_leader: "Leadership Group Leader",
-  campus_missionary: "Campus Missionary",
-};
-
-const DEMOGRAPHY_LABELS: Record<string, string> = {
-  student_youth: "Student / Youth",
-  single_young_professional: "Single / Young Professional",
-  married: "Married",
-  parent: "Parent",
-  senior: "Senior",
-};
-
-const AREA_LABELS: Record<string, string> = {
-  binan: "Binan",
-  nuvali: "Nuvali",
-  santa_rosa_city: "Santa Rosa City",
-};
+import { AREA_LABELS, DEMOGRAPHY_LABELS, LEADER_ROLE_LABELS, LEADER_YEAR_LEVEL_LABELS } from "../api/labels";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -59,6 +40,16 @@ export default function Profile() {
         <Field label="Gender" value={user.gender === "male" ? "Male" : "Female"} />
         <Field label="Area" value={AREA_LABELS[user.area] ?? user.area} />
         <Field label="Contact number" value={user.contact_number || "—"} />
+        <Field label="Currently a Student?" value={user.is_student ? "Yes" : "No"} />
+        {user.is_student && (
+          <>
+            <Field
+              label="Grade Level / Year"
+              value={user.year_level ? LEADER_YEAR_LEVEL_LABELS[user.year_level] : "—"}
+            />
+            <Field label="School / Campus" value={user.school_name ?? "—"} />
+          </>
+        )}
       </div>
     </div>
   );
