@@ -1,4 +1,4 @@
-import type { AttendanceStatus, Demography, LeaderRole, LeaderYearLevel, MemberRole, YearLevel } from "../api/types";
+import type { AttendanceStatus, Demography, GroupDemography, LeaderRole, LeaderYearLevel, MemberRole, YearLevel } from "../api/types";
 
 export const YEAR_LEVEL_OPTIONS: { value: YearLevel; label: string }[] = [
   { value: "elementary", label: "Elementary" },
@@ -63,6 +63,13 @@ export const AREA_LABELS: Record<string, string> = {
   binan: "Binan",
   nuvali: "Nuvali",
   santa_rosa_city: "Santa Rosa City",
+};
+
+export const GROUP_DEMOGRAPHY_LABELS: Record<GroupDemography, string> = {
+  high_school: "High School",
+  college: "College",
+  mixed: "Mixed",
+  others: "Others",
 };
 
 export const ATTENDANCE_LABELS: Record<AttendanceStatus, string> = {

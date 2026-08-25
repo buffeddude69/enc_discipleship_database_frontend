@@ -7,26 +7,10 @@ interface LoginResponse {
   user: User;
 }
 
-interface RegisterPayload {
-  username: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  leader_role: User["leader_role"];
-  demography: User["demography"];
-  gender: User["gender"];
-  area: User["area"];
-  contact_number: string;
-  year_level: User["year_level"];
-  school: number | null;
-}
-
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (username: string, password: string) => Promise<void>;
-  register: (payload: RegisterPayload) => Promise<void>;
   updateUser: (updated: User) => void;
   logout: () => void;
 }
@@ -57,12 +41,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user);
   }
 
-  async function register(payload: RegisterPayload) {
-    const data = await api.post<LoginResponse>("/auth/register/", payload);
-    setToken(data.token);
-    setUser(data.user);
-  }
-
   function updateUser(updated: User) {
     setUser(updated);
   }
@@ -73,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, updateUser, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

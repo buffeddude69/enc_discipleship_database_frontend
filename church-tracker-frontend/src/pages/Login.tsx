@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ApiError } from "../api/client";
 
@@ -82,10 +82,7 @@ export default function Login() {
           </button>
 
           <p className="text-center text-sm text-charcoal-soft">
-            New here?{" "}
-            <Link to="/register" className="text-pine font-medium">
-              Create an account
-            </Link>
+            Don't have an account? Ask your staff/coordinator to create one for you.
           </p>
         </form>
       </div>

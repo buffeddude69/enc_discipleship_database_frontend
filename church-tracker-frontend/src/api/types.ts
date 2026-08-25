@@ -34,12 +34,16 @@ export type MeetingFrequency = "weekly" | "biweekly" | "monthly" | "other";
 export type MeetingDay =
   | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday" | "";
 
+export type GroupDemography = "high_school" | "college" | "mixed" | "others";
+
 export interface Group {
   id: number;
   name: string;
   leader: number;
   leader_name: string;
   group_type: GroupType;
+  demography: GroupDemography;
+  demography_other: string;
   gender_composition: GenderComposition;
   meeting_frequency: MeetingFrequency;
   meeting_frequency_note: string;
@@ -61,6 +65,8 @@ export type YearLevel =
 export interface School {
   id: number;
   name: string;
+  area: string;
+  demography: string;
 }
 
 export interface Ministry {

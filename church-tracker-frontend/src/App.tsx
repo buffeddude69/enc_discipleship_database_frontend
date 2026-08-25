@@ -4,7 +4,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import StaffRoute from "./components/StaffRoute";
 import Layout from "./components/Layout";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Groups from "./pages/Groups";
 import GroupDetail from "./pages/GroupDetail";
 import AddGroup from "./pages/AddGroup";
@@ -17,10 +16,12 @@ import EditMemberProfile from "./pages/EditMemberProfile";
 import MemberProfile from "./pages/MemberProfile";
 import Leaders from "./pages/Leaders";
 import LeaderProfile from "./pages/LeaderProfile";
+import AddLeader from "./pages/AddLeader";
 import ManageLookups from "./pages/ManageLookups";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
+import ChangePassword from "./pages/ChangePassword";
 
 export default function App() {
   return (
@@ -28,7 +29,6 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
 
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
@@ -51,6 +51,7 @@ export default function App() {
               {/* Own profile */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/edit" element={<EditProfile />} />
+              <Route path="/profile/change-password" element={<ChangePassword />} />
 
               {/* Any authenticated leader can view another leader's profile
                   (e.g. from a group membership row) -- the full searchable
@@ -61,6 +62,7 @@ export default function App() {
               <Route element={<StaffRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/leaders" element={<Leaders />} />
+                <Route path="/leaders/new" element={<AddLeader />} />
                 <Route path="/manage-lists" element={<ManageLookups />} />
               </Route>
             </Route>

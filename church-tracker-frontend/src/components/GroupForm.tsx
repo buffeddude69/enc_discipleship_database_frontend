@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { api } from "../api/client";
+import { api, extractErrorMessage } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { Field, inputClass } from "./Form";
 import type { Group, User } from "../api/types";
@@ -17,6 +17,8 @@ export default function GroupForm({ initial, onSubmit, submitLabel }: GroupFormP
 
   const [name, setName] = useState(initial?.name ?? "");
   const [groupType, setGroupType] = useState<Group["group_type"]>(initial?.group_type ?? "small_group");
+  const [demography, setDemography] = useState<Group["demography"]>(initial?.demography ?? "mixed");
+  const [demographyOther, setDemographyOther] = useState(initial?.demography_other ?? "");
   const [genderComposition, setGenderComposition] = useState<Group["gender_composition"]>(
     initial?.gender_composition ?? "mixed"
   );
@@ -47,6 +49,8 @@ export default function GroupForm({ initial, onSubmit, submitLabel }: GroupFormP
       await onSubmit({
         name,
         group_type: groupType,
+        demography,
+        demography_other: demography === "others" ? demographyOther : "",
         gender_composition: genderComposition,
         meeting_frequency: meetingFrequency,
         meeting_day: meetingDay,
@@ -55,8 +59,8 @@ export default function GroupForm({ initial, onSubmit, submitLabel }: GroupFormP
         is_active: isActive,
         ...(user?.is_staff && leaderId ? { leader: Number(leaderId) } : {}),
       });
-    } catch {
-      setError("Couldn't save the group. Please check the fields and try again.");
+    } catch (err) {
+      setError(extractErrorMessage(err, "Couldn't save the group. Please check the fields and try again."));
       setSubmitting(false);
     }
   }
@@ -94,6 +98,27 @@ export default function GroupForm({ initial, onSubmit, submitLabel }: GroupFormP
           <option value="campus_ministry">Campus Ministry</option>
         </select>
       </Field>
+
+      <Field label="Demography">
+        <select value={demography} onChange={(e) => setDemography(e.target.value as Group["demography"])} className={inputClass}>
+          <option value="high_school">High School</option>
+          <option value="college">College</option>
+          <option value="mixed">Mixed</option>
+          <option value="others">Others</option>
+        </select>
+      </Field>
+
+      {demography === "others" && (
+        <Field label="Please specify">
+          <input
+            required
+            value={demographyOther}
+            onChange={(e) => setDemographyOther(e.target.value)}
+            className={inputClass}
+            placeholder="e.g. Young Professionals, Senior Adults"
+          />
+        </Field>
+      )}
 
       <Field label="Gender composition">
         <select

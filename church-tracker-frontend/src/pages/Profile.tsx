@@ -11,12 +11,20 @@ export default function Profile() {
     <div className="max-w-md mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-2xl font-semibold text-pine">My Profile</h2>
-        <Link
-          to="/profile/edit"
-          className="text-sm font-medium text-pine border border-pine rounded-lg px-3.5 py-1.5 hover:bg-sage-light transition-colors"
-        >
-          Edit Profile
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            to="/profile/change-password"
+            className="text-sm font-medium text-pine border border-pine rounded-lg px-3.5 py-1.5 hover:bg-sage-light transition-colors"
+          >
+            Change Password
+          </Link>
+          <Link
+            to="/profile/edit"
+            className="text-sm font-medium text-pine border border-pine rounded-lg px-3.5 py-1.5 hover:bg-sage-light transition-colors"
+          >
+            Edit Profile
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-2xl border border-sage-light p-6 space-y-4">

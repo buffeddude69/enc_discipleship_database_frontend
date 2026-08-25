@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../api/client";
-import { ATTENDANCE_DOT_COLOR, LEADER_ROLE_LABELS, ROLE_LABELS } from "../api/labels";
+import { ATTENDANCE_DOT_COLOR, GROUP_DEMOGRAPHY_LABELS, LEADER_ROLE_LABELS, ROLE_LABELS } from "../api/labels";
 import type { Group, GroupMembership } from "../api/types";
 
 export default function GroupDetail() {
@@ -39,7 +39,8 @@ export default function GroupDetail() {
         <div>
           <h2 className="font-display text-2xl font-semibold text-pine">{group.name}</h2>
           <p className="text-charcoal-soft mt-1">
-            {group.meeting_day && capitalize(group.meeting_day)}
+            {group.demography === "others" ? group.demography_other : GROUP_DEMOGRAPHY_LABELS[group.demography]}
+            {group.meeting_day && ` · ${capitalize(group.meeting_day)}`}
             {group.meeting_time && ` · ${group.meeting_time.slice(0, 5)}`}
             {group.venue && ` · ${group.venue}`}
           </p>

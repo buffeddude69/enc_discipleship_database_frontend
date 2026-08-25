@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { api } from "../api/client";
+import { api, extractErrorMessage } from "../api/client";
 import { inputClass } from "../components/Form";
 import type { DiscipleshipStage, Ministry, School } from "../api/types";
 
@@ -17,6 +17,8 @@ export default function ManageLookups() {
 function SchoolsSection() {
   const [schools, setSchools] = useState<School[]>([]);
   const [name, setName] = useState("");
+  const [area, setArea] = useState("");
+  const [demography, setDemography] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -32,11 +34,17 @@ function SchoolsSection() {
     setError(null);
     setSubmitting(true);
     try {
-      await api.post<School>("/schools/", { name: name.trim() });
+      await api.post<School>("/schools/", {
+        name: name.trim(),
+        area: area.trim(),
+        demography: demography.trim(),
+      });
       setName("");
+      setArea("");
+      setDemography("");
       load();
-    } catch {
-      setError("Couldn't add that school. It may already exist.");
+    } catch (err) {
+      setError(extractErrorMessage(err, "Couldn't add that school. It may already exist."));
     } finally {
       setSubmitting(false);
     }
@@ -56,19 +64,35 @@ function SchoolsSection() {
     <section>
       <h3 className="font-medium text-charcoal mb-3">Schools / Campuses</h3>
       <div className="bg-white rounded-2xl border border-sage-light p-5">
-        <form onSubmit={handleAdd} className="flex gap-2 mb-4">
+        <form onSubmit={handleAdd} className="space-y-2.5 mb-4">
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. De La Salle Santa Rosa, N/A"
+            placeholder="School name, e.g. De La Salle Santa Rosa, N/A"
             className={inputClass}
           />
+
+          <div className="flex gap-2">
+            <input
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+              placeholder="Area, e.g. Nuvali"
+              className={`${inputClass} flex-1`}
+            />
+            <input
+              value={demography}
+              onChange={(e) => setDemography(e.target.value)}
+              placeholder="Demography, e.g. College"
+              className={`${inputClass} flex-1`}
+            />
+          </div>
+
           <button
             type="submit"
             disabled={submitting}
-            className="bg-pine hover:bg-pine-dark disabled:opacity-60 text-white text-sm font-medium px-4 rounded-lg transition-colors shrink-0"
+            className="w-full bg-pine hover:bg-pine-dark disabled:opacity-60 text-white text-sm font-medium py-2 rounded-lg transition-colors"
           >
-            Add
+            Add School
           </button>
         </form>
 
@@ -77,8 +101,16 @@ function SchoolsSection() {
         <ul className="space-y-1.5">
           {schools.map((s) => (
             <li key={s.id} className="flex items-center justify-between text-sm text-charcoal px-1">
-              {s.name}
-              <button onClick={() => handleDelete(s.id)} className="text-brick text-xs font-medium hover:text-brick/80">
+              <span>
+                {s.name}
+                {(s.area || s.demography) && (
+                  <span className="text-charcoal-soft">
+                    {" · "}
+                    {[s.area, s.demography].filter(Boolean).join(" · ")}
+                  </span>
+                )}
+              </span>
+              <button onClick={() => handleDelete(s.id)} className="text-brick text-xs font-medium hover:text-brick/80 shrink-0">
                 Remove
               </button>
             </li>

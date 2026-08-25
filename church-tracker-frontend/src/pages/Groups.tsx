@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../context/AuthContext";
+import { GROUP_DEMOGRAPHY_LABELS } from "../api/labels";
 import type { Group } from "../api/types";
 
 const GROUP_TYPE_LABELS: Record<Group["group_type"], string> = {
@@ -63,6 +64,8 @@ export default function Groups() {
                   </div>
                   <p className="text-sm text-charcoal-soft mt-1">
                     {GROUP_TYPE_LABELS[group.group_type]}
+                    {" · "}
+                    {group.demography === "others" ? group.demography_other : GROUP_DEMOGRAPHY_LABELS[group.demography]}
                     {group.meeting_day && ` · ${capitalize(group.meeting_day)}s`}
                     {group.venue && ` · ${group.venue}`}
                   </p>

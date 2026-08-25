@@ -28,7 +28,15 @@ export default function Leaders() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="font-display text-2xl font-semibold text-pine mb-4">Leaders</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="font-display text-2xl font-semibold text-pine">Leaders</h2>
+        <Link
+          to="/leaders/new"
+          className="bg-pine hover:bg-pine-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+        >
+          + Add Leader
+        </Link>
+      </div>
 
       <input
         type="text"
