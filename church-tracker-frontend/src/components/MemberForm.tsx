@@ -107,7 +107,7 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
         </select>
       </Field>
 
-      <Field label="School / campus">
+      <Field label="School / Campus">
         <select required value={schoolId} onChange={(e) => setSchoolId(e.target.value)} className={inputClass}>
           <option value="" disabled>
             — Select —
