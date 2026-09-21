@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { api, extractErrorMessage } from "../api/client";
 import { Field, inputClass } from "../components/Form";
 import StudentFields from "../components/StudentFields";
+import OneOnOneField from "../components/OneOnOneField";
 import type { User } from "../api/types";
 
 export default function AddLeader() {
@@ -20,6 +21,8 @@ export default function AddLeader() {
   const [contactNumber, setContactNumber] = useState("");
   const [yearLevel, setYearLevel] = useState<User["year_level"]>("");
   const [schoolId, setSchoolId] = useState("");
+  const [isDoingOneOnOne, setIsDoingOneOnOne] = useState(false);
+  const [oneOnOneWith, setOneOnOneWith] = useState("");
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -48,6 +51,8 @@ export default function AddLeader() {
         contact_number: contactNumber,
         year_level: isStudent ? yearLevel : "",
         school: isStudent && schoolId ? Number(schoolId) : null,
+        is_doing_one_on_one: isDoingOneOnOne,
+        one_on_one_with: isDoingOneOnOne ? oneOnOneWith : "",
       });
       setCreated(data.user);
     } catch (err) {
@@ -82,6 +87,8 @@ export default function AddLeader() {
                 setLastName("");
                 setEmail("");
                 setContactNumber("");
+                setIsDoingOneOnOne(false);
+                setOneOnOneWith("");
               }}
               className="flex-1 bg-pine hover:bg-pine-dark text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
             >
@@ -178,6 +185,13 @@ export default function AddLeader() {
             <option value="santa_rosa_city">Santa Rosa City</option>
           </select>
         </Field>
+
+        <OneOnOneField
+          isDoing={isDoingOneOnOne}
+          onIsDoingChange={setIsDoingOneOnOne}
+          withWhom={oneOnOneWith}
+          onWithWhomChange={setOneOnOneWith}
+        />
 
         {error && <p role="alert" className="text-sm text-brick bg-brick-light rounded-lg px-3 py-2">{error}</p>}
 

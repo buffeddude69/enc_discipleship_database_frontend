@@ -4,6 +4,7 @@ import { api, extractErrorMessage } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 import { Field, inputClass } from "../components/Form";
 import StudentFields from "../components/StudentFields";
+import OneOnOneField from "../components/OneOnOneField";
 import type { User } from "../api/types";
 
 export default function EditProfile() {
@@ -20,6 +21,8 @@ export default function EditProfile() {
   const [contactNumber, setContactNumber] = useState(user?.contact_number ?? "");
   const [yearLevel, setYearLevel] = useState<User["year_level"]>(user?.year_level ?? "");
   const [schoolId, setSchoolId] = useState(user?.school ? String(user.school) : "");
+  const [isDoingOneOnOne, setIsDoingOneOnOne] = useState(user?.is_doing_one_on_one ?? false);
+  const [oneOnOneWith, setOneOnOneWith] = useState(user?.one_on_one_with ?? "");
 
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -43,6 +46,8 @@ export default function EditProfile() {
         contact_number: contactNumber,
         year_level: isStudent ? yearLevel : "",
         school: isStudent && schoolId ? Number(schoolId) : null,
+        is_doing_one_on_one: isDoingOneOnOne,
+        one_on_one_with: isDoingOneOnOne ? oneOnOneWith : "",
       });
       updateUser(updated);
       navigate("/profile");
@@ -116,6 +121,13 @@ export default function EditProfile() {
             <option value="santa_rosa_city">Santa Rosa City</option>
           </select>
         </Field>
+
+        <OneOnOneField
+          isDoing={isDoingOneOnOne}
+          onIsDoingChange={setIsDoingOneOnOne}
+          withWhom={oneOnOneWith}
+          onWithWhomChange={setOneOnOneWith}
+        />
 
         {error && <p role="alert" className="text-sm text-brick bg-brick-light rounded-lg px-3 py-2">{error}</p>}
 

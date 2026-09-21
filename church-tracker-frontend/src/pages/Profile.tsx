@@ -48,6 +48,10 @@ export default function Profile() {
         <Field label="Gender" value={user.gender === "male" ? "Male" : "Female"} />
         <Field label="Area" value={AREA_LABELS[user.area] ?? user.area} />
         <Field label="Contact number" value={user.contact_number || "—"} />
+        <Field
+          label="One2One"
+          value={user.is_doing_one_on_one ? (user.one_on_one_with ? `Yes, with ${user.one_on_one_with}` : "Yes") : "No"}
+        />
         <Field label="Currently a Student?" value={user.is_student ? "Yes" : "No"} />
         {user.is_student && (
           <>

@@ -39,6 +39,10 @@ export default function LeaderProfile() {
         <Field label="Gender" value={leader.gender === "male" ? "Male" : "Female"} />
         <Field label="Area" value={AREA_LABELS[leader.area] ?? leader.area} />
         <Field label="Contact Number" value={leader.contact_number || "—"} />
+        <Field
+          label="One2One"
+          value={leader.is_doing_one_on_one ? (leader.one_on_one_with ? `Yes, with ${leader.one_on_one_with}` : "Yes") : "No"}
+        />
         <Field label="Currently a Student?" value={leader.is_student ? "Yes" : "No"} />
         {leader.is_student && (
           <>

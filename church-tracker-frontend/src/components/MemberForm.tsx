@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { api, extractErrorMessage } from "../api/client";
 import { Field, inputClass } from "./Form";
 import { YEAR_LEVEL_OPTIONS } from "../api/labels";
+import OneOnOneField from "./OneOnOneField";
 import type { DiscipleshipStage, Member, Ministry, School } from "../api/types";
 
 interface MemberFormProps {
@@ -23,6 +24,8 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
   );
   const [remarks, setRemarks] = useState(initial?.remarks ?? "");
   const [remarksPhoto, setRemarksPhoto] = useState<File | null>(null);
+  const [isDoingOneOnOne, setIsDoingOneOnOne] = useState(initial?.is_doing_one_on_one ?? false);
+  const [oneOnOneWith, setOneOnOneWith] = useState(initial?.one_on_one_with ?? "");
 
   const [schools, setSchools] = useState<School[]>([]);
   const [ministries, setMinistries] = useState<Ministry[]>([]);
@@ -52,6 +55,8 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
         ministries: ministryIds,
         discipleship_stage: discipleshipStageId || null,
         remarks,
+        is_doing_one_on_one: isDoingOneOnOne,
+        one_on_one_with: isDoingOneOnOne ? oneOnOneWith : "",
       };
       if (remarksPhoto) payload.remarks_photo = remarksPhoto;
       await onSubmit(payload);
@@ -107,7 +112,7 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
         </select>
       </Field>
 
-      <Field label="School / Campus">
+      <Field label="School / campus">
         <select required value={schoolId} onChange={(e) => setSchoolId(e.target.value)} className={inputClass}>
           <option value="" disabled>
             — Select —
@@ -186,6 +191,13 @@ export default function MemberForm({ initial, onSubmit, submitLabel }: MemberFor
           className={inputClass}
         />
       </Field>
+
+      <OneOnOneField
+        isDoing={isDoingOneOnOne}
+        onIsDoingChange={setIsDoingOneOnOne}
+        withWhom={oneOnOneWith}
+        onWithWhomChange={setOneOnOneWith}
+      />
 
       {error && <p role="alert" className="text-sm text-brick bg-brick-light rounded-lg px-3 py-2">{error}</p>}
 

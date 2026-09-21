@@ -47,6 +47,10 @@ export default function MemberProfile() {
           value={member.ministry_names.length > 0 ? member.ministry_names.join(", ") : "Not currently serving"}
         />
         <Field label="Discipleship Stage" value={member.discipleship_stage_name ?? "Not set"} />
+        <Field
+          label="One2One"
+          value={member.is_doing_one_on_one ? (member.one_on_one_with ? `Yes, with ${member.one_on_one_with}` : "Yes") : "No"}
+        />
         <Field label="Groups" value={member.group_names.length > 0 ? member.group_names.join(", ") : "None yet"} />
         <Field label="Last Updated" value={new Date(member.updated_at).toLocaleDateString()} />
       </div>

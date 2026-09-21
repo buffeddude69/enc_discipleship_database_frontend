@@ -24,6 +24,8 @@ export interface User {
   year_level: LeaderYearLevel | "";
   school: number | null;
   school_name: string | null;
+  is_doing_one_on_one: boolean;
+  one_on_one_with: string;
   groups_led: string[];
   groups_member_of: string[];
 }
@@ -98,6 +100,8 @@ export interface Member {
   discipleship_stage_name: string | null;
   remarks: string;
   remarks_photo: string | null;
+  is_doing_one_on_one: boolean;
+  one_on_one_with: string;
   needs_update: boolean;
   group_names: string[];
   created_at: string;
