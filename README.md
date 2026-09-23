@@ -22,8 +22,6 @@ The frontend is hosted and deployed using **Vercel**.
 * Client-side form handling and validation
 * Protected pages based on authentication and user permissions
 
-> Update this list according to the features currently implemented in the frontend.
-
 ---
 
 ## Tech Stack
@@ -35,54 +33,8 @@ The frontend is hosted and deployed using **Vercel**.
 * **Django REST Framework** — backend API
 * **Vercel** — frontend hosting and deployment
 
-> Add or remove technologies based on the project's actual dependencies.
-
 ---
 
-## Project Structure
-
-The frontend follows a component-based React architecture.
-
-```text
-frontend/
-│
-├── public/
-│
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── context/
-│   ├── api/
-│   ├── hooks/
-│   ├── assets/
-│   ├── App.tsx
-│   └── main.tsx
-│
-├── .env.example
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── ...
-```
-
-> Update the structure above to match the actual folders in your repository.
-
-### Main Components
-
-| Directory / File | Purpose                                                          |
-| ---------------- | ---------------------------------------------------------------- |
-| `components/`    | Reusable UI components                                           |
-| `pages/`         | Application pages and page-level components                      |
-| `context/`       | React Context used for shared application state                  |
-| `api/`           | Functions responsible for communicating with the backend API     |
-| `hooks/`         | Reusable React hooks                                             |
-| `assets/`        | Images, icons, and other static frontend assets                  |
-| `App.tsx`        | Main application component and application routing/configuration |
-| `main.tsx`       | Entry point that initializes the React application               |
-
-> Update these descriptions according to the actual implementation.
-
----
 
 ## Prerequisites
 
@@ -120,28 +72,6 @@ npm install
 ```
 
 This installs the packages listed in `package.json`.
-
----
-
-## Environment Variables
-
-Create a local environment file according to the variables used by the project.
-
-For example:
-
-```env
-VITE_API_URL=<BACKEND_API_URL>
-```
-
-The environment variable should point to the Django REST Framework backend.
-
-For local development, this may point to the local backend server.
-
-For production, the variable should point to the deployed backend API.
-
-> Do not commit private credentials, secrets, or sensitive configuration values to the repository.
-
----
 
 ## Running the Development Server
 
@@ -344,8 +274,6 @@ For example:
 npm test
 ```
 
-> Replace this section with the actual testing setup if your project currently uses a specific testing framework such as Vitest, Jest, or React Testing Library.
-
 ---
 
 ## Related Repository
@@ -362,8 +290,3 @@ The backend is built with Django REST Framework.
 
 ---
 
-## License
-
-This project is intended for private use.
-
-Add the appropriate license information here if the project will be distributed publicly.
